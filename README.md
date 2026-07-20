@@ -100,14 +100,17 @@ This phase demonstrated that the Wazuh deployment isn't just collecting logs pas
 
 ### Screenshots
 
-   **Brute-Force Logon Detection**
-   ![Brute force logon](screenshots/01-bruteforce-logon-failure.png)
+**Endpoint Overview**
+![Agent dashboard](screenshots/09-agent-dashboard-overview.png)
 
-   **FIM - Checksum Changed**
-   ![FIM alert](screenshots/02-fim-checksum-changed.png)
+**Brute-Force Logon Detection**
+![Brute force logon](screenshots/05-bruteforce-logon-failure.png)
 
-   **EICAR File Detected**
-   ![EICAR detection](screenshots/03-eicar-file-detected.png)
+**FIM - Checksum Changed**
+![FIM alert](screenshots/06-fim-checksum-changed.png)
 
-   **Security Control State Change**
-   ![Security state change](screenshots/04-security-control-state-change.png)
+**EICAR File Detected**
+![EICAR detection](screenshots/07-eicar-file-detected.png)
+
+**Security Control State Change**
+![Security state change](screenshots/08-security-control-state-change.png)
