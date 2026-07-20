@@ -67,6 +67,9 @@ The Wazuh dashboard was accessed from the Windows host using:
 
 ```text
 https://127.0.0.1:8443
+```
+
+---
 
 ## Threat Detection & Findings
 
@@ -96,12 +99,10 @@ Downloaded the EICAR test file, a harmless string recognized industry-wide as a 
 Toggled McAfee's real-time scanning off, then back on. Wazuh picked up the resulting service-level state changes (rule 60642), reflecting the security software rescheduling its protection tasks. This models a "defense evasion" pattern — an attacker disabling AV/EDR is a common early step in an intrusion, and having visibility into security-control state changes is a key SOC detection use case.
 
 ### Key Takeaway
+
 This phase demonstrated that the Wazuh deployment isn't just collecting logs passively — it can surface authentication abuse, file tampering, malware arrival, and security-control state changes, the categories of events a SOC analyst is expected to triage daily. It also surfaced a real gap (McAfee log forwarding) worth addressing in future iterations of this lab.
 
 ### Screenshots
-
-**Endpoint Overview**
-![Agent dashboard](screenshots/09-agent-dashboard-overview.png)
 
 **Brute-Force Logon Detection**
 ![Brute force logon](screenshots/05-bruteforce-logon-failure.png)
@@ -114,3 +115,6 @@ This phase demonstrated that the Wazuh deployment isn't just collecting logs pas
 
 **Security Control State Change**
 ![Security state change](screenshots/08-security-control-state-change.png)
+
+**Endpoint Overview**
+![Agent dashboard](screenshots/09-agent-dashboard-overview.png)
