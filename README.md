@@ -106,3 +106,85 @@ Initial testing did not produce an immediate alert because the directory was bei
 <directories check_all="yes" report_changes="yes" realtime="yes">
   C:\Users\ashwin\Desktop\fim-test
 </directories>
+
+```
+
+After modifying `test1.txt`, Wazuh generated rule `550`, level `7`, with the description:
+
+> Integrity checksum changed.
+
+This confirmed that Wazuh could detect and report changes made to files inside the monitored directory.
+
+![FIM checksum changed](screenshots/06-fim-checksum-changed.png)
+
+### Finding 3 — EICAR Test File Added
+
+The harmless EICAR antivirus test file was downloaded into the monitored directory to test file-creation visibility.
+
+Wazuh generated rule `554`, level `5`, with the description:
+
+> File added to the system.
+
+The alert recorded the file path:
+
+```text
+C:\Users\ashwin\Desktop\fim-test\eicar.com
+```
+
+This demonstrated Wazuh FIM's ability to detect the creation of a new file. The Wazuh alert showed that the file was added but did not independently classify the file as malware.
+
+![EICAR test file added](screenshots/07-eicar-file-detected.png)
+
+### Finding 4 — Benign Event Triage
+
+During event analysis, Wazuh displayed rule `60642`, level `3`, with the description:
+
+> Software protection service scheduled successfully.
+
+Although this alert appeared during security-control testing, the alert description alone did not prove that antivirus protection had been disabled.
+
+The event was treated as informational because additional evidence would be required to establish what caused it and whether it represented malicious activity.
+
+This demonstrated an important SOC analyst responsibility: reviewing an alert's rule ID, severity, description, source, and surrounding context before deciding whether it is malicious or benign.
+
+![Software protection event](screenshots/08-security-control-state-change.png)
+
+## MITRE ATT&CK Context
+
+The following are potential contextual mappings. They describe how similar activity could relate to adversary behavior but do not mean that a real attack occurred during this controlled lab.
+
+| Observed Activity | Potential MITRE ATT&CK Technique |
+|---|---|
+| Repeated incorrect password attempts | T1110.001 — Password Guessing |
+| Unauthorized modification of stored files | T1565.001 — Stored Data Manipulation |
+
+## Key Findings
+
+- The Windows endpoint successfully forwarded security and system events to the Wazuh server.
+- Wazuh recorded four failed authentication attempts within approximately 30 seconds.
+- Real-time File Integrity Monitoring detected a change to a monitored file.
+- Wazuh recorded the creation of the EICAR test file through rule `554`.
+- Not every alert represented malicious activity, and analyst validation was required.
+- Additional integration would be required to display antivirus-specific detection and quarantine events in Wazuh.
+
+## Lessons Learned
+
+- An active Wazuh agent does not automatically prove that every required event source is being collected.
+- Agent connectivity, endpoint status, and alert visibility must be tested separately.
+- Real-time monitoring must be enabled when immediate file-change detection is required.
+- A file-integrity alert proves that a file was added or modified, but it does not automatically prove that Wazuh identified malware.
+- Events occurring near a test action do not necessarily prove that the action caused the event.
+- Effective SIEM analysis requires separating meaningful security activity from routine system noise.
+
+## Future Improvements
+
+- Integrate antivirus detection and quarantine logs with Wazuh.
+- Install Sysmon to collect more detailed process, network, and file activity.
+- Create a custom correlation rule for repeated failed logons within a defined time period.
+- Test detections involving account creation, privilege changes, and suspicious PowerShell activity.
+
+## Endpoint Validation
+
+The Wazuh dashboard confirmed that the Windows endpoint was connected and actively reporting events.
+
+![Endpoint dashboard overview](screenshots/09-agent-dashboard-overview.png)
