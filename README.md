@@ -84,8 +84,17 @@ To validate that this Wazuh deployment does more than passively collect logs, fo
 
 ### Scenario Details
 
-**1. Brute-Force Logon Detection**
-Deliberately entered an incorrect password multiple times at the Windows lock screen. Wazuh flagged each attempt under the `authentication_failed` rule group. In a live environment, an analyst would check whether the source was local or remote, correlate against a failure-count threshold, and escalate if attempts originated from an unrecognized host or account.
+#### 1. Repeated Failed Logon Attempts
+
+Multiple failed authentication events were generated against the Windows endpoint within a short period.
+
+Wazuh generated rule `60122`, level `5`, with the description:
+
+> Logon Failure - Unknown user or bad password
+
+Four failed logon events were recorded within approximately 30 seconds. This pattern may indicate password guessing, an incorrect saved credential, or repeated user error. Additional investigation would be required before classifying the activity as a confirmed brute-force attack.
+
+![Repeated failed logon attempts](screenshots/05-bruteforce-logon-failure.png)
 
 **2. File Integrity Monitoring (FIM)**
 Configured a monitored directory in `ossec.conf` using `check_all` and `report_changes`. Initial testing showed no alerts because syscheck's default scan interval is 12 hours; adding `realtime="yes"` enabled near-instant detection. Editing a file inside the monitored path triggered a "checksum changed" alert within seconds — a directly relevant skill, since FIM is the same mechanism that would flag a ransomware payload or webshell drop in a production environment.
